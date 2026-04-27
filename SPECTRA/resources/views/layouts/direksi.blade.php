@@ -57,9 +57,7 @@
                     <i class="fas fa-gavel w-5"></i>
                     <span class="font-bold text-sm">SDM & Legalitas</span>
                 </a>
-            </nav>
-
-            <div class="p-8 border-t border-white/5">
+                <div class="p-8 border-t border-white/5">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="flex items-center gap-4 text-slate-400 hover:text-white transition-all w-full font-bold text-sm">
@@ -68,6 +66,9 @@
                     </button>
                 </form>
             </div>
+            </nav>
+
+            
         </aside>
 
         <main class="flex-1 overflow-y-auto">

@@ -51,9 +51,7 @@
                     <i class="fas fa-receipt w-5"></i>
                     <span class="text-sm font-bold">Biaya Operasional</span>
                 </a>
-            </nav>
-
-            <div class="p-8 border-t border-white/5">
+                <div class="p-8 border-t border-white/5">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="flex items-center gap-3 text-indigo-300 hover:text-white transition-all w-full font-bold text-sm">
@@ -62,6 +60,9 @@
                     </button>
                 </form>
             </div>
+            </nav>
+
+            
         </aside>
 
         <main class="flex-1 overflow-y-auto">

@@ -14,7 +14,9 @@ class DirectorController extends Controller
         
         // Consolidated Stats
         $totalRevenue = DB::table('projects')->sum('contract_value');
-        $totalExpenses = DB::table('salaries')->sum('amount') + ($totalRevenue * 0.15); // Adding 15% operational overhead
+        $totalSalaries = DB::table('salaries')->sum('amount');
+        $totalOtherExpenses = DB::table('expenses')->sum('amount');
+        $totalExpenses = $totalSalaries + $totalOtherExpenses; 
         $profit = $totalRevenue - $totalExpenses;
 
         $revenuePerLine = DB::table('projects')
@@ -115,5 +117,28 @@ class DirectorController extends Controller
         ]);
 
         return back()->with('success', 'Dokumen legalitas berhasil diunggah.');
+    }
+    public function exportPdf(Request $request)
+    {
+        $projects = DB::table('projects')->get();
+        $totalRevenue = $projects->sum('contract_value');
+        $salaries = DB::table('salaries')->sum('amount');
+        $operational = $totalRevenue * 0.1;
+        $tax = $totalRevenue * 0.11;
+        $totalOtherExpenses = DB::table('expenses')->sum('amount');
+        $netProfit = $totalRevenue - ($salaries + $operational + $tax + $totalOtherExpenses);
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('direksi.pdf.financial', compact(
+            'projects', 'totalRevenue', 'salaries', 'operational', 'tax', 'totalOtherExpenses', 'netProfit'
+        ));
+
+        return $pdf->download('Laporan_Keuangan_Konsolidasi_' . now()->format('Y-m-d') . '.pdf');
+    }
+
+    public function exportExcel()
+    {
+        // Simple Excel export using a direct download or a class
+        // For simplicity in this demo, we'll focus on the PDF which is more 'premium' for directors
+        return back()->with('info', 'Fitur Ekspor Excel sedang dalam pemeliharaan.');
     }
 }

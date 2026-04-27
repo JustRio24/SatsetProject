@@ -91,5 +91,12 @@
             </div>
         </main>
     </div>
+
+    <!-- Mobile Nav (Simple Bottom Bar) -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around p-3 z-50">
+        <a href="{{ route('finance.dashboard') }}" class="text-gray-400 {{ request()->routeIs('finance.dashboard') ? 'text-indigo-600' : '' }}"><i class="fas fa-vault text-xl"></i></a>
+        <a href="{{ route('finance.payouts') }}" class="text-gray-400 {{ request()->routeIs('finance.payouts') ? 'text-indigo-600' : '' }}"><i class="fas fa-money-bill-transfer text-xl"></i></a>
+        <a href="{{ route('finance.expenses') }}" class="text-gray-400 {{ request()->routeIs('finance.expenses') ? 'text-indigo-600' : '' }}"><i class="fas fa-file-invoice-dollar text-xl"></i></a>
+    </div>
 </body>
 </html>

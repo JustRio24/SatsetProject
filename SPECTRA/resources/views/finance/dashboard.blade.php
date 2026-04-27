@@ -29,13 +29,13 @@
     </div>
 </div>
 
-<div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden">
+<div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden animate-fade-in-up">
     <div class="p-8 border-b border-slate-50 flex justify-between items-center">
-        <h3 class="font-bold text-slate-800">Biaya Operasional Terbaru</h3>
-        <a href="{{ route('finance.expenses') }}" class="text-sm font-bold text-indigo-600 uppercase tracking-widest">Lihat Semua</a>
+        <h3 class="font-bold text-slate-800 uppercase tracking-tighter italic">Biaya Operasional Terbaru</h3>
+        <a href="{{ route('finance.expenses') }}" class="text-[10px] font-black text-indigo-600 uppercase tracking-widest bg-indigo-50 px-4 py-2 rounded-xl hover:bg-indigo-600 hover:text-white transition-all">Lihat Semua</a>
     </div>
-    <div class="p-0">
-        <table class="w-full text-left">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left min-w-[600px]">
             <thead>
                 <tr class="bg-slate-50 text-[10px] font-black text-slate-400 uppercase tracking-widest">
                     <th class="px-8 py-4">Proyek</th>
@@ -47,7 +47,7 @@
             <tbody class="divide-y divide-slate-100">
                 @foreach($recentExpenses as $expense)
                     <tr class="hover:bg-slate-50 transition-colors">
-                        <td class="px-8 py-5 text-sm font-bold text-slate-800">{{ $expense->project_name }}</td>
+                        <td class="px-8 py-5 text-sm font-black text-slate-800">{{ $expense->project_name }}</td>
                         <td class="px-8 py-5">
                             <span class="px-3 py-1 bg-slate-100 text-slate-600 rounded-lg text-[10px] font-black uppercase">{{ $expense->category }}</span>
                         </td>

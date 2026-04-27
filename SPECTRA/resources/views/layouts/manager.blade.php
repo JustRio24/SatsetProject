@@ -26,8 +26,8 @@
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center font-black text-xl shadow-lg shadow-blue-500/20">S</div>
                         <div>
-                            <h1 class="font-black text-lg leading-none tracking-tighter">SATSET</h1>
-                            <p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">MANAGER AREA</p>
+                            <h1 class="font-black text-lg leading-none tracking-tighter">SPECTRA</h1>
+                            <p class="text-[7px] text-blue-400 font-bold uppercase tracking-widest leading-tight">SATSET Intelligence System</p>
                         </div>
                     </div>
                     <button @click="mobileMenu = false" class="md:hidden text-white/50 hover:text-white">
@@ -61,9 +61,7 @@
                     <i class="fas fa-file-invoice-dollar w-5"></i>
                     <span class="text-sm font-bold">Laporan Bulanan</span>
                 </a>
-            </nav>
-
-            <div class="p-6 border-t border-white/10">
+                 <div class="p-6 border-t border-white/10">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="flex items-center gap-3 text-gray-400 hover:text-white transition-colors w-full">
@@ -72,6 +70,9 @@
                     </button>
                 </form>
             </div>
+            </nav>
+
+           
         </aside>
 
         <main class="flex-1 overflow-y-auto">
@@ -105,5 +106,14 @@
             </div>
         </main>
     </div>
+
+    <!-- Mobile Nav (Simple Bottom Bar) -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around p-3 z-50">
+        <a href="{{ route('manager.dashboard') }}" class="text-gray-400 {{ request()->routeIs('manager.dashboard') ? 'text-blue-600' : '' }}"><i class="fas fa-home text-xl"></i></a>
+        <a href="{{ route('manager.projects.index') }}" class="text-gray-400 {{ request()->routeIs('manager.projects.*') ? 'text-blue-600' : '' }}"><i class="fas fa-briefcase text-xl"></i></a>
+        <a href="{{ route('manager.monitoring') }}" class="text-gray-400 {{ request()->routeIs('manager.monitoring') ? 'text-blue-600' : '' }}"><i class="fas fa-desktop text-xl"></i></a>
+        <a href="{{ route('manager.salary-recap') }}" class="text-gray-400 {{ request()->routeIs('manager.salary-recap') ? 'text-blue-600' : '' }}"><i class="fas fa-money-bill-transfer text-xl"></i></a>
+    </div>
 </body>
 </html>
+

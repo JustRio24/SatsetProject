@@ -55,9 +55,7 @@
                     <i class="fas fa-trophy w-5"></i>
                     <span class="text-sm font-bold">KPI & Gamifikasi</span>
                 </a>
-            </nav>
-
-            <div class="p-6 border-t border-white/10">
+                <div class="p-6 border-t border-white/10">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
                     <button type="submit" class="flex items-center gap-3 text-emerald-200 hover:text-white transition-colors w-full font-bold text-sm">
@@ -66,6 +64,9 @@
                     </button>
                 </form>
             </div>
+            </nav>
+
+            
         </aside>
 
         <main class="flex-1 overflow-y-auto">
@@ -95,6 +96,14 @@
                 @yield('content')
             </div>
         </main>
+    </div>
+
+    <!-- Mobile Nav (Simple Bottom Bar) -->
+    <div class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around p-3 z-50">
+        <a href="{{ route('gm.dashboard') }}" class="text-gray-400 {{ request()->routeIs('gm.dashboard') ? 'text-emerald-600' : '' }}"><i class="fas fa-th-large text-xl"></i></a>
+        <a href="{{ route('gm.monitoring') }}" class="text-gray-400 {{ request()->routeIs('gm.monitoring') ? 'text-emerald-600' : '' }}"><i class="fas fa-camera text-xl"></i></a>
+        <a href="{{ route('gm.contracts') }}" class="text-gray-400 {{ request()->routeIs('gm.contracts') ? 'text-emerald-600' : '' }}"><i class="fas fa-file-signature text-xl"></i></a>
+        <a href="{{ route('gm.gamification') }}" class="text-gray-400 {{ request()->routeIs('gm.gamification') ? 'text-emerald-600' : '' }}"><i class="fas fa-trophy text-xl"></i></a>
     </div>
 </body>
 </html>

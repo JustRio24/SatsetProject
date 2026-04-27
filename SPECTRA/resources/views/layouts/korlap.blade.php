@@ -13,6 +13,16 @@
         .sidebar-gradient { background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%); }
         .active-link { background: rgba(255, 255, 255, 0.1); border-left: 4px solid #ef4444; font-weight: 800; }
         .glass-header { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(10px); }
+        
+        /* Micro-animations */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in-up { animation: fadeInUp 0.6s ease-out forwards; }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
     </style>
 </head>
 <body class="bg-[#f8fafc] text-slate-900" x-data="{ mobileMenu: false }">
@@ -26,8 +36,8 @@
                     <div class="flex items-center gap-3">
                         <div class="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center font-black text-xl shadow-lg shadow-red-500/20">S</div>
                         <div>
-                            <h1 class="font-black text-lg leading-none tracking-tighter">SATSET</h1>
-                            <p class="text-[10px] text-red-400 font-bold uppercase tracking-widest">KORLAP TERMINAL</p>
+                            <h1 class="font-black text-lg leading-none tracking-tighter">SPECTRA</h1>
+                            <p class="text-[7px] text-red-400 font-bold uppercase tracking-widest leading-tight">SATSET Intelligence System</p>
                         </div>
                     </div>
                     <button @click="mobileMenu = false" class="md:hidden text-white/50 hover:text-white">
@@ -61,17 +71,19 @@
                     <i class="fas fa-wallet w-5"></i>
                     <span class="text-sm font-bold">Gaji & Bonus</span>
                 </a>
-            </nav>
 
-            <div class="p-6 border-t border-white/10">
+                <div class="p-6 border-t border-white/10">
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <button type="submit" class="flex items-center gap-3 text-gray-400 hover:text-white transition-colors w-full">
+                    <button type="submit" class="flex items-center gap-3 text-gray-400 hover:text-white transition-colors w-full ">
                         <i class="fas fa-sign-out-alt w-5"></i>
                         <span>Keluar</span>
                     </button>
                 </form>
             </div>
+            </nav>
+
+            
         </aside>
 
         <main class="flex-1 overflow-y-auto">

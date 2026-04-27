@@ -1,29 +1,29 @@
 @extends('layouts.gm', ['title' => 'Papan Skor Lini Bisnis ' . auth()->user()->business_line])
 
 @section('content')
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 relative overflow-hidden group">
-        <p class="text-gray-400 text-xs font-bold uppercase mb-2 tracking-widest">Total Pendapatan</p>
-        <h3 class="text-3xl font-extrabold text-emerald-600">Rp {{ number_format($stats['total_revenue'], 0, ',', '.') }}</h3>
-        <i class="fas fa-chart-line absolute -bottom-2 -right-2 text-6xl text-emerald-50 group-hover:scale-110 transition-transform"></i>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+    <div class="bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-50 relative overflow-hidden group animate-fade-in-up">
+        <p class="text-slate-400 text-[10px] font-black uppercase mb-2 tracking-widest">Total Pendapatan</p>
+        <h3 class="text-3xl font-black text-emerald-600">Rp {{ number_format($stats['total_revenue'], 0, ',', '.') }}</h3>
+        <i class="fas fa-chart-line absolute -bottom-4 -right-4 text-7xl text-emerald-50 group-hover:scale-110 transition-transform"></i>
     </div>
 
-    <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 relative overflow-hidden group">
-        <p class="text-gray-400 text-xs font-bold uppercase mb-2 tracking-widest">Proyek Aktif</p>
-        <h3 class="text-3xl font-extrabold text-blue-600">{{ $stats['active_projects'] }}</h3>
-        <i class="fas fa-spinner absolute -bottom-2 -right-2 text-6xl text-blue-50 group-hover:rotate-12 transition-transform"></i>
+    <div class="bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-50 relative overflow-hidden group animate-fade-in-up delay-100">
+        <p class="text-slate-400 text-[10px] font-black uppercase mb-2 tracking-widest">Proyek Aktif</p>
+        <h3 class="text-3xl font-black text-blue-600">{{ $stats['active_projects'] }}</h3>
+        <i class="fas fa-spinner absolute -bottom-4 -right-4 text-7xl text-blue-50 group-hover:rotate-12 transition-transform"></i>
     </div>
 
-    <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 relative overflow-hidden group">
-        <p class="text-gray-400 text-xs font-bold uppercase mb-2 tracking-widest">Proyek Selesai</p>
-        <h3 class="text-3xl font-extrabold text-purple-600">{{ $stats['completed_projects'] }}</h3>
-        <i class="fas fa-check-double absolute -bottom-2 -right-2 text-6xl text-purple-50 group-hover:scale-110 transition-transform"></i>
+    <div class="bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-50 relative overflow-hidden group animate-fade-in-up delay-200">
+        <p class="text-slate-400 text-[10px] font-black uppercase mb-2 tracking-widest">Proyek Selesai</p>
+        <h3 class="text-3xl font-black text-purple-600">{{ $stats['completed_projects'] }}</h3>
+        <i class="fas fa-check-double absolute -bottom-4 -right-4 text-7xl text-purple-50 group-hover:scale-110 transition-transform"></i>
     </div>
 
-    <div class="bg-white p-8 rounded-3xl shadow-sm border border-gray-100 relative overflow-hidden group">
-        <p class="text-gray-400 text-xs font-bold uppercase mb-2 tracking-widest">Wilayah Operasional</p>
-        <h3 class="text-3xl font-extrabold text-orange-600">{{ $stats['total_areas'] }} Area</h3>
-        <i class="fas fa-map-marked-alt absolute -bottom-2 -right-2 text-6xl text-orange-50 group-hover:scale-110 transition-transform"></i>
+    <div class="bg-white p-8 rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-50 relative overflow-hidden group animate-fade-in-up delay-300">
+        <p class="text-slate-400 text-[10px] font-black uppercase mb-2 tracking-widest">Wilayah Operasional</p>
+        <h3 class="text-3xl font-black text-orange-600">{{ $stats['total_areas'] }} <span class="text-xs">Area</span></h3>
+        <i class="fas fa-map-marked-alt absolute -bottom-4 -right-4 text-7xl text-orange-50 group-hover:scale-110 transition-transform"></i>
     </div>
 </div>
 

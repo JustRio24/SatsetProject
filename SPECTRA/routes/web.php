@@ -44,6 +44,10 @@ Route::middleware(['auth', 'role:direksi'])->prefix('direksi')->name('direksi.')
     Route::get('/balance-sheet', [\App\Http\Controllers\DirectorController::class, 'balanceSheet'])->name('balance-sheet');
     Route::get('/sdm-legal', [\App\Http\Controllers\DirectorController::class, 'employeeLegal'])->name('sdm-legal');
     Route::post('/sdm-legal/upload', [\App\Http\Controllers\DirectorController::class, 'uploadLegal'])->name('sdm-legal.upload');
+    
+    // Exports
+    Route::get('/export/pdf', [\App\Http\Controllers\DirectorController::class, 'exportPdf'])->name('export.pdf');
+    Route::get('/export/excel', [\App\Http\Controllers\DirectorController::class, 'exportExcel'])->name('export.excel');
 });
 
 // GM Routes
@@ -94,9 +98,14 @@ Route::middleware(['auth', 'role:manager_area'])->prefix('manager')->name('manag
     
     // Salary Recap
     Route::get('/salary-recap', [ManagerAreaController::class, 'salaryRecap'])->name('salary-recap');
+    Route::post('/salary-recap/approve/{projectId}', [ManagerAreaController::class, 'approveSalary'])->name('salary-recap.approve');
+    Route::post('/salary-recap/approve-all', [ManagerAreaController::class, 'approveAllSalaries'])->name('salary-recap.approve-all');
     
     // Monthly Report
     Route::get('/monthly-report', [ManagerAreaController::class, 'monthlyReport'])->name('monthly-report');
+    
+    // Exports
+    Route::get('/export/payouts', [ManagerAreaController::class, 'exportPayouts'])->name('export.payouts');
 });
 
 Route::middleware('auth')->group(function () {

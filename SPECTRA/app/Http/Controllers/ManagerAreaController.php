@@ -103,16 +103,108 @@ class ManagerAreaController extends Controller
         $recaps = $projects->map(function($project) {
             $val = $project->contract_value;
             return [
+                'project_id' => $project->id,
                 'project_name' => $project->name,
                 'total' => $val,
                 'worker_share' => $val * 0.5,
                 'company_share' => $val * 0.3,
                 'korlap_share' => $val * 0.1,
                 'manager_share' => $val * 0.1,
+                'is_approved' => DB::table('salaries')->where('project_id', $project->id)->exists(),
             ];
         });
 
         return view('manager.salary-recap', compact('recaps'));
+    }
+
+    public function approveSalary($projectId)
+    {
+        $area = auth()->user()->area;
+        $project = DB::table('projects')->where('id', $projectId)->where('area', $area)->first();
+
+        if (!$project) {
+            return back()->with('error', 'Proyek tidak ditemukan.');
+        }
+
+        if (DB::table('salaries')->where('project_id', $project->id)->exists()) {
+            return back()->with('error', 'Rekap proyek ini sudah disetujui sebelumnya.');
+        }
+
+        $val = $project->contract_value;
+        $workerShareTotal = $val * 0.5;
+        $korlapShareTotal = $val * 0.1;
+        $managerShareTotal = $val * 0.1;
+
+        $workers = User::where('role', 'worker')->where('area', $area)->get();
+        $korlaps = User::where('role', 'korlap')->where('area', $area)->get();
+
+        $inserts = [];
+
+        // Workers
+        if ($workers->count() > 0) {
+            $perWorker = $workerShareTotal / $workers->count();
+            foreach ($workers as $worker) {
+                $inserts[] = [
+                    'user_id' => $worker->id,
+                    'amount' => $perWorker,
+                    'type' => 'gaji',
+                    'status' => 'pending',
+                    'payment_date' => now(),
+                    'project_id' => $project->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+        }
+
+        // Korlaps
+        if ($korlaps->count() > 0) {
+            $perKorlap = $korlapShareTotal / $korlaps->count();
+            foreach ($korlaps as $korlap) {
+                $inserts[] = [
+                    'user_id' => $korlap->id,
+                    'amount' => $perKorlap,
+                    'type' => 'bagi_hasil',
+                    'status' => 'pending',
+                    'payment_date' => now(),
+                    'project_id' => $project->id,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+        }
+
+        // Manager
+        $inserts[] = [
+            'user_id' => auth()->id(),
+            'amount' => $managerShareTotal,
+            'type' => 'bagi_hasil',
+            'status' => 'pending',
+            'payment_date' => now(),
+            'project_id' => $project->id,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ];
+
+        DB::table('salaries')->insert($inserts);
+
+        return back()->with('success', 'Rekap gaji proyek ' . $project->name . ' berhasil disetujui dan diteruskan ke Keuangan.');
+    }
+
+    public function approveAllSalaries()
+    {
+        $area = auth()->user()->area;
+        $projects = DB::table('projects')->where('area', $area)->get();
+        $count = 0;
+
+        foreach ($projects as $project) {
+            if (!DB::table('salaries')->where('project_id', $project->id)->exists()) {
+                $this->approveSalary($project->id);
+                $count++;
+            }
+        }
+
+        return back()->with('success', $count . ' rekap gaji proyek berhasil disetujui.');
     }
 
     public function monthlyReport()
@@ -129,5 +221,17 @@ class ManagerAreaController extends Controller
         $expenses = $revenue * 0.6; // Simplified: 60% for workers/others
         
         return view('manager.monthly-report', compact('revenue', 'expenses', 'month'));
+    }
+    public function exportPayouts()
+    {
+        $user = auth()->user();
+        $payouts = DB::table('salaries')
+            ->join('users', 'salaries.user_id', '=', 'users.id')
+            ->where('users.area', $user->area)
+            ->select('salaries.*', 'users.name as recipient_name', 'users.role as recipient_role')
+            ->get();
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('manager.pdf.payouts', compact('payouts', 'user'));
+        return $pdf->download('Rekap_Gaji_Area_' . $user->area . '_' . now()->format('Y-m-d') . '.pdf');
     }
 }

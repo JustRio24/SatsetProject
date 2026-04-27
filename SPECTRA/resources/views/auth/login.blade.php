@@ -16,21 +16,24 @@
         .glass-card { background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px); border: 1px solid white; }
     </style>
 </head>
-<body class="login-bg min-h-screen flex items-center justify-center p-6">
-    <div class="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+<body class="login-bg min-h-screen flex items-center justify-center p-4 sm:p-6">
+    <div class="max-w-5xl w-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
         <!-- Left: Branding -->
         <div class="hidden lg:block space-y-8">
             <div class="flex items-center gap-4">
                 <div class="w-16 h-16 bg-red-600 rounded-3xl flex items-center justify-center text-white text-2xl shadow-2xl shadow-red-500/30">
                     <i class="fas fa-bolt"></i>
                 </div>
-                <h1 class="text-4xl font-black text-slate-900 tracking-tighter uppercase">SPECTRA<br><span class="text-red-600">Terminal</span></h1>
+                <div>
+                    <h1 class="text-4xl font-black text-slate-900 tracking-tighter uppercase leading-none">SPECTRA</h1>
+                    <p class="text-[8px] font-black text-red-600 uppercase tracking-[0.2em] mt-1">System for Project, Earnings, & Comprehensive Task Reporting Analysis</p>
+                </div>
             </div>
             <h2 class="text-5xl font-black text-slate-800 tracking-tighter leading-tight">
                 Integrasi Operasional <br> <span class="text-slate-400 italic">Tanpa Batas.</span>
             </h2>
             <p class="text-lg text-slate-500 font-medium leading-relaxed max-w-sm">
-                Akses dashboard manajemen operasional PT. SatSet MerahPutih Indonesia melalui terminal terenkripsi.
+                Masuk ke ekosistem manajemen proyek terpadu PT. SatSet MerahPutih Indonesia.
             </p>
             
             <div class="pt-8 flex gap-6">

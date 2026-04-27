@@ -12,10 +12,22 @@ class KorlapController extends Controller
     {
         $user = auth()->user();
         
-        // Stats
-        $totalSubordinates = User::where('role', 'worker')->count();
-        $recentReports = DB::table('daily_reports')->where('user_id', $user->id)->latest()->limit(5)->get();
-        $totalEarnings = DB::table('salaries')->where('user_id', $user->id)->sum('amount');
+        // Stats - scope to area
+        $totalSubordinates = User::where('role', 'worker')
+            ->where('area', $user->area)
+            ->count();
+        $recentReports = DB::table('daily_reports')
+            ->where('user_id', $user->id)
+            ->latest()
+            ->limit(5)
+            ->get();
+        $totalEarnings = DB::table('salaries')
+            ->where('user_id', $user->id)
+            ->sum('amount');
+        $todayAttendance = DB::table('attendances')
+            ->where('korlap_id', $user->id)
+            ->whereDate('created_at', today())
+            ->count();
 
         // Mini Leaderboard (Same Area)
         $leaderboard = User::where('role', 'korlap')
@@ -24,12 +36,15 @@ class KorlapController extends Controller
             ->limit(5)
             ->get();
 
-        return view('korlap.dashboard', compact('user', 'totalSubordinates', 'recentReports', 'totalEarnings', 'leaderboard'));
+        return view('korlap.dashboard', compact('user', 'totalSubordinates', 'recentReports', 'totalEarnings', 'leaderboard', 'todayAttendance'));
     }
 
     public function attendance()
     {
-        $subordinates = User::where('role', 'worker')->get();
+        $user = auth()->user();
+        $subordinates = User::where('role', 'worker')
+            ->where('area', $user->area)
+            ->get();
         return view('korlap.attendance', compact('subordinates'));
     }
 

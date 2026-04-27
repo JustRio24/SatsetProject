@@ -28,8 +28,8 @@
                             <i class="fas fa-building-columns text-slate-900 text-xl"></i>
                         </div>
                         <div>
-                            <h1 class="font-black text-xl leading-none tracking-tighter">SATSET</h1>
-                            <p class="text-[10px] text-amber-400 font-bold uppercase tracking-widest">BOARD OF DIRECTORS</p>
+                            <h1 class="font-black text-xl leading-none tracking-tighter">SPECTRA</h1>
+                            <p class="text-[7px] text-amber-400 font-bold uppercase tracking-widest leading-tight italic">System for Project & Earnings Analysis</p>
                         </div>
                     </div>
                     <button @click="mobileMenu = false" class="lg:hidden text-white/50 hover:text-white">
@@ -100,6 +100,14 @@
                 @yield('content')
             </div>
         </main>
+    </div>
+
+    <!-- Mobile Nav (Simple Bottom Bar) -->
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around p-3 z-50">
+        <a href="{{ route('direksi.dashboard') }}" class="text-gray-400 {{ request()->routeIs('direksi.dashboard') ? 'text-amber-600' : '' }}"><i class="fas fa-chart-pie text-xl"></i></a>
+        <a href="{{ route('direksi.financial') }}" class="text-gray-400 {{ request()->routeIs('direksi.financial') ? 'text-amber-600' : '' }}"><i class="fas fa-file-invoice-dollar text-xl"></i></a>
+        <a href="{{ route('direksi.balance-sheet') }}" class="text-gray-400 {{ request()->routeIs('direksi.balance-sheet') ? 'text-amber-600' : '' }}"><i class="fas fa-scale-balanced text-xl"></i></a>
+        <a href="{{ route('direksi.sdm-legal') }}" class="text-gray-400 {{ request()->routeIs('direksi.sdm-legal') ? 'text-amber-600' : '' }}"><i class="fas fa-users-viewfinder text-xl"></i></a>
     </div>
 </body>
 </html>

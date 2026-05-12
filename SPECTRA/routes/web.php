@@ -10,6 +10,9 @@ Route::get('/', function () {
 
 Route::get('/dashboard', function () {
     $user = auth()->user();
+    if ($user->role === 'superadmin') {
+        return redirect()->route('superadmin.dashboard');
+    }
     if ($user->role === 'korlap') {
         return redirect()->route('korlap.dashboard');
     }
@@ -27,6 +30,17 @@ Route::get('/dashboard', function () {
     }
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Super Admin Routes
+Route::middleware(['auth', 'role:superadmin'])->prefix('superadmin')->name('superadmin.')->group(function () {
+    Route::get('/dashboard', [\App\Http\Controllers\SuperAdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/users', [\App\Http\Controllers\SuperAdminController::class, 'users'])->name('users');
+    Route::get('/users/create', [\App\Http\Controllers\SuperAdminController::class, 'createUser'])->name('users.create');
+    Route::post('/users', [\App\Http\Controllers\SuperAdminController::class, 'storeUser'])->name('users.store');
+    Route::get('/users/{user}/edit', [\App\Http\Controllers\SuperAdminController::class, 'editUser'])->name('users.edit');
+    Route::put('/users/{user}', [\App\Http\Controllers\SuperAdminController::class, 'updateUser'])->name('users.update');
+    Route::delete('/users/{user}', [\App\Http\Controllers\SuperAdminController::class, 'deleteUser'])->name('users.destroy');
+});
 
 // Finance Routes
 Route::middleware(['auth', 'role:finance'])->prefix('finance')->name('finance.')->group(function () {

@@ -16,6 +16,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Super Admin
+        User::factory()->create([
+            'name' => 'System Administrator',
+            'email' => 'superadmin@satset.com',
+            'password' => Hash::make('password'),
+            'role' => 'superadmin',
+        ]);
+
         // Direksi
         User::factory()->create([
             'name' => 'Bp. Satya Setiawan',
@@ -180,5 +188,87 @@ class DatabaseSeeder extends Seeder
             ['user_id' => $korlap->id, 'points_change' => 100, 'reason' => 'Bonus target progres mingguan', 'category' => 'Performance', 'created_at' => now()],
             ['user_id' => $korlap->id, 'points_change' => -10, 'reason' => 'Laporan terlambat 1 jam', 'category' => 'Punctuality', 'created_at' => now()->subDay()],
         ]);
+
+        // --- ADDING MORE DUMMY DATA ---
+        $faker = \Faker\Factory::create('id_ID');
+
+        // Add 50 Dummy Users
+        $roles = ['manager_area', 'korlap', 'worker'];
+        $areas = ['Semarang', 'Jakarta', 'Surabaya', 'Bandung', 'Medan', 'Yogyakarta', 'Solo'];
+        $businessLines = ['Bangunan', 'Entertainment'];
+        
+        $newUsers = [];
+        for ($i = 0; $i < 50; $i++) {
+            $role = $faker->randomElement($roles);
+            $newUsers[] = User::factory()->create([
+                'name' => $faker->name,
+                'email' => $faker->unique()->safeEmail,
+                'password' => Hash::make('password'),
+                'role' => $role,
+                'area' => $faker->randomElement($areas),
+                'business_line' => $role !== 'worker' ? $faker->randomElement($businessLines) : null,
+                'kpi_points' => $faker->numberBetween(0, 1000),
+                'phone' => $faker->phoneNumber,
+            ]);
+        }
+
+        // Add 100 Dummy Projects
+        $projects = [];
+        $managerIds = User::where('role', 'manager_area')->pluck('id')->toArray();
+        if (empty($managerIds)) $managerIds = [$manager->id];
+
+        for ($i = 0; $i < 100; $i++) {
+            $projects[] = [
+                'name' => 'Proyek ' . $faker->randomElement(['Renovasi', 'Pembangunan', 'Instalasi', 'Pemeliharaan', 'Setup']) . ' ' . $faker->company,
+                'client_name' => $faker->company,
+                'service_type' => $faker->randomElement($businessLines),
+                'contract_value' => $faker->numberBetween(10, 1000) * 1000000,
+                'duration' => $faker->numberBetween(1, 12) . ' ' . $faker->randomElement(['Bulan', 'Minggu']),
+                'area' => $faker->randomElement($areas),
+                'manager_id' => $faker->randomElement($managerIds),
+                'created_at' => now()->subDays($faker->numberBetween(1, 365)),
+            ];
+        }
+        
+        // Insert chunks to avoid packet too large
+        foreach (array_chunk($projects, 50) as $chunk) {
+            \DB::table('projects')->insert($chunk);
+        }
+
+        // Add Dummy Salaries for all korlaps and managers
+        $salaries = [];
+        $salaryReceivers = User::whereIn('role', ['korlap', 'manager_area'])->get();
+        foreach ($salaryReceivers as $receiver) {
+            for ($i = 0; $i < 6; $i++) {
+                $salaries[] = [
+                    'user_id' => $receiver->id,
+                    'amount' => $faker->numberBetween(2, 15) * 1000000,
+                    'type' => $faker->randomElement(['gaji', 'bagi_hasil', 'bonus']),
+                    'status' => $faker->randomElement(['paid', 'paid', 'paid', 'pending']),
+                    'payment_date' => now()->subDays($faker->numberBetween(1, 180)),
+                ];
+            }
+        }
+        foreach (array_chunk($salaries, 100) as $chunk) {
+            \DB::table('salaries')->insert($chunk);
+        }
+
+        // Add Dummy KPI Logs
+        $kpiLogs = [];
+        $usersWithKpi = User::whereIn('role', ['manager_area', 'korlap'])->get();
+        foreach ($usersWithKpi as $u) {
+            for ($i = 0; $i < 15; $i++) {
+                $kpiLogs[] = [
+                    'user_id' => $u->id,
+                    'points_change' => $faker->numberBetween(-50, 100),
+                    'reason' => $faker->sentence(),
+                    'category' => $faker->randomElement(['Punctuality', 'Performance', 'Quality', 'Safety']),
+                    'created_at' => now()->subDays($faker->numberBetween(1, 90)),
+                ];
+            }
+        }
+        foreach (array_chunk($kpiLogs, 100) as $chunk) {
+            \DB::table('kpi_logs')->insert($chunk);
+        }
     }
 }
